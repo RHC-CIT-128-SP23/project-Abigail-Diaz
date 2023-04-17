@@ -1,15 +1,21 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=10716410&assignment_repo_type=AssignmentRepo)
-# PROJECT TITLE
+# Space Cat
 
 CIT 128 Student Directed Project
 
 ## Student Info
 
-Add your Name, CRN, and Semester Year here using unordered bullets in Markdown.
+- Abigail Diaz
+- CIT 128
+- Spring 2023
 
 ## Program Description
 
-Describe your individual project program and include the goals of the program.
+My project is a platform game where a cat must pass the level wihout loosing all lives. 
+The cat must jump and move forward while avoiding obstacles and enemies.
+The goal of the program is to provide a simple game that works smoothly with the player's input and
+without errors that would ruin the gaming experience. The program will let the user know if they
+have lost the game or not.
 
 ### Video Demonstration
 
