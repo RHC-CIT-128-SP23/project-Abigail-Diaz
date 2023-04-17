@@ -37,6 +37,10 @@ cat_jump = False
 # Background movement
 background_motion = 0
 
+# Cat movement
+move_right = False
+move_left = False
+
 
 # Assume game is running
 running = True
@@ -51,18 +55,37 @@ while running:
             if event.key == pg.K_SPACE:
                 player_gravity = -20
                 cat_jump = True
+        
+        # move cat right with -> key
+        if event.type ==  pg.KEYDOWN:
+            if event.key == pg.K_RIGHT:
+                move_right = True      # number of steps to the right
+                move_left = False
+            elif event.key == pg.K_LEFT:
+                move_left = True
+                move_right = False
+        
+        if event.type == pg.KEYUP:
+            if event.key == pg.K_RIGHT or event.key == pg.K_LEFT:
+                #stop the cat
+                move_right = False
+                move_left = False
 
     # Display the background on the window
-    background_motion += 1/4
-    screen.blit(space_background, (-100 + background_motion, 0))
+    #background_motion += 1/4
+    screen.blit(space_background, (-100, 0))
     screen.blit(space_background, (0, 0))
-    screen.blit(space_background, (background_motion + 100, 0))
-    screen.blit(space_background, (750 + background_motion, 0))
+    screen.blit(space_background, (100, 0))
+    screen.blit(space_background, (550 , 0))
     
     
     # ~~~~ Cat Animation ~~~~
+    # Cat movement
     # move cat to the right of window (from user perspective)
-    cat_rect.left += 2
+    if move_right == True:
+        cat_rect.x += 2
+    if move_left == True:
+        cat_rect.x -= 2
     
     # Gravity: Cat will fall down as y values increase
     player_gravity += 1
@@ -93,11 +116,9 @@ while running:
     if bat_rect.left < 0:
         bat_rect.left = screen_width
     
-    if background_motion == 100:
-        background_motion  = -100
+    #if background_motion == 100:
+        #background_motion  = -100
     
     #update screen
     pg.display.flip()
     clock.tick(60)
-    
- 
