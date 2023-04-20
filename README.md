@@ -25,13 +25,34 @@ Add a Link to your video demonstration
 
 Add any install instructions, if needed. This includes how to install included modules or libraries as well as configurations. You may remove this section if no special instructions are required.
 
+Required modules: Pygame
+
+Installing Pygame module 
+
+macOS
+On terminal type the command:
+python3 -m pip install -U pygame --user
+
+Windows
+On command prompt type the command:
+pip install pygame
+
 ## Software Engineering
 
 Describe the software engineering techniques used for the design and development of this program.
 
+The software engeneering techniques from the Software Development Life Cycle (SDLC) that have been used in the development of the project are checking if the project is feasible. The feasability taken into account is technical, since it would affect the project's progress the most when it comes to proper knowledge for implementation. The second important feasibility is time since the project must be finished within 8 weeks. 
+
 ## Testing Script
 
 Describe the testing process using paragraphs and numbered bullet lists how to manually test the software here. 
+
+- Press [space bar] to check if the character jumps
+- Press right keyboard key to check if the character moves to the right
+- Press left keyboard key to check if the character moves to the left
+- Jump on top of a platform to see if character stays on top of the platform
+- Walk off the platform with either the left or right keyboard key to see if character falls off the platform
+  without needing to press the space bar.
 
 ## Directions and Grading Rubric
 
