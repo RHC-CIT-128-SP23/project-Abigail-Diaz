@@ -9,21 +9,28 @@ import pygame as pg
 import sys
 
 class Surface:
-    def __init__(self, file_name):
+    def __init__(self, file_name, image_width, image_length):
         self.file_name = file_name
-        self.image = None
+        self.image_width = image_width
+        self.image_length = image_length
+        self.set_surface_image()
+        self.surf_image = self.get_image()
     # Import images
-    def import_surface_image(self):
-        self.image = pg.image.load(self.file_name).convert_alpha()
-    def get_imported_image(self):
-        return self.image
-    def resize_image(self, image_width, image_length):
-        self.surface = self.get_imported_image()
-        self.image = pg.transform.smoothscale(self.surface, (image_width, image_length))
-    # create the rectangles of each surface
-    def get_rectangle(self):
+    def set_surface_image(self):
+        self.surf_image = pg.image.load(self.file_name).convert_alpha()
+        self.resize_image()
+    def get_image(self):
+        return self.surf_image
+    def resize_image(self):
+        self.surf_image = pg.transform.smoothscale(self.surf_image, (self.image_width, self.image_length))
+    
+class Rectangle (Surface):
+    def __init__(self, file_name, image_width, image_length):
+        super().__init__(file_name, image_width, image_length)
+        self.rectangle = self.get_rectangle()
+    def get_rectangle(self): # create the rectangles of each surface
+        self.image = self.surf_image
         return self.image.get_rect(midbottom = (0, 420 + 30)) #fix vague numbers
-        
 
 # start pygame
 pg.init()
@@ -41,10 +48,8 @@ space_background = pg.image.load('media/background3Medium.jpeg').convert()
 bat = pg.image.load('media/bat-x1.gif').convert_alpha()
 platform = pg.image.load('media/ground.png').convert_alpha()
 
-cat = Surface('media/cat.png')
-cat.import_surface_image()
-cat.resize_image(80, 80)
-cat_rect = cat.get_rectangle()
+cat = Rectangle('media/cat.png', 80, 80)
+#cat.resize_image(80, 80)
 
 # create the rectangles of each surface
 platform = pg.transform.smoothscale(platform, (90, 50))
@@ -106,21 +111,21 @@ while running:
     # Cat movement
     # move cat to the right of window (from user perspective)
     if move_right == True:
-        cat_rect.x += 2
+        cat.rectangle.x += 2
     if move_left == True:
-        cat_rect.x -= 2
+        cat.rectangle.x -= 2
     
     # Collision with platform
-    collide_platform = pg.Rect.colliderect(cat_rect, platform_rect)
+    collide_platform = pg.Rect.colliderect(cat.rectangle, platform_rect)
     
     # Keep cat on top of platform
     if collide_platform:
         cat_jump = False
-        cat_rect.bottom = platform_rect.top
+        cat.rectangle.bottom = platform_rect.top
         recent_platform_collide = True
     
     # Cat falls when outside platform
-    if cat_rect.x > platform_rect.x and recent_platform_collide == True:
+    if cat.rectangle.x > platform_rect.x and recent_platform_collide == True:
         cat_fall = True
         recent_platform_collide = False
     
@@ -128,27 +133,27 @@ while running:
     # Gravity: Cat will fall down as y values increase
     if cat_fall == True:
         player_gravity += 1
-        cat_rect.y += player_gravity
+        cat.rectangle.y += player_gravity
         
     # cat will move on the x axis as it completes the jump
     if cat_jump == True:
         cat_fall = False
         player_gravity += 1
-        cat_rect.y += player_gravity
-        cat_rect.x += 3
+        cat.rectangle.y += player_gravity
+        cat.rectangle.x += 3
     
     # check if cat reached the floor
     #Condition: If cat reached the floor, then it must
     # be false that he is jumping
-    if cat_rect.bottom >= floor: 
-        cat_rect.bottom = floor
+    if cat.rectangle.bottom >= floor: 
+        cat.rectangle.bottom = floor
         cat_jump = False
     
     # check if the cat goes out of the screen's range
-    if cat_rect.left > screen_width:  
-        cat_rect.x = 0
+    if cat.rectangle.left > screen_width:  
+        cat.rectangle.x = 0
     
-    screen.blit(cat.image, cat_rect)
+    screen.blit(cat.image, cat.rectangle)
     
     # Bat movements: Moves from left to right
     bat_rect.right -= 1
