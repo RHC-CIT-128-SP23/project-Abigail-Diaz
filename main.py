@@ -8,6 +8,23 @@
 import pygame as pg
 import sys
 
+class Surface:
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.image = None
+    # Import images
+    def import_surface_image(self):
+        self.image = pg.image.load(self.file_name).convert_alpha()
+    def get_imported_image(self):
+        return self.image
+    def resize_image(self, image_width, image_length):
+        self.surface = self.get_imported_image()
+        self.image = pg.transform.smoothscale(self.surface, (image_width, image_length))
+    # create the rectangles of each surface
+    def get_rectangle(self):
+        return self.image.get_rect(midbottom = (0, 420 + 30)) #fix vague numbers
+        
+
 # start pygame
 pg.init()
 
@@ -21,15 +38,17 @@ clock = pg.time.Clock()
 
 # Import images
 space_background = pg.image.load('media/background3Medium.jpeg').convert()
-cat = pg.image.load('media/cat.png').convert_alpha()
 bat = pg.image.load('media/bat-x1.gif').convert_alpha()
 platform = pg.image.load('media/ground.png').convert_alpha()
 
-# create the rectangles of each character
-cat = pg.transform.smoothscale(cat, (80, 80))
+cat = Surface('media/cat.png')
+cat.import_surface_image()
+cat.resize_image(80, 80)
+cat_rect = cat.get_rectangle()
+
+# create the rectangles of each surface
 platform = pg.transform.smoothscale(platform, (90, 50))
 bat = pg.transform.smoothscale(bat, (80, 80))
-cat_rect = cat.get_rect(midbottom = (0, floor + 30))
 bat_rect = bat.get_rect(midbottom = (screen_width, floor - 10))
 platform_rect = platform.get_rect(midbottom= (screen_width/2, screen_length/2))
 
@@ -75,7 +94,6 @@ while running:
                 move_left = False
 
     # Display the background on the window
-    #background_motion += 1/4
     screen.blit(space_background, (-100, 0))
     screen.blit(space_background, (0, 0))
     screen.blit(space_background, (100, 0))
@@ -130,7 +148,7 @@ while running:
     if cat_rect.left > screen_width:  
         cat_rect.x = 0
     
-    screen.blit(cat, cat_rect)
+    screen.blit(cat.image, cat_rect)
     
     # Bat movements: Moves from left to right
     bat_rect.right -= 1
