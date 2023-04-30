@@ -35,6 +35,8 @@ class Rectangle (Surface):
     def set_position(self, x, y):
         self.rectangle.x = x
         self.rectangle.y = y
+    def set_fall(self, boolean_factor):
+        self.physics.fall = boolean_factor
 
 class Physics:
     def __init__(self, rect):
@@ -45,28 +47,56 @@ class Physics:
         self.move_right = False
         self.move_left = False
     def move(self):
-        #if self.move_right == True:
-            #self.rect.x += 2
-        #if self.move_left == True:
-            #self.rect.x -= 2
         self.y_axis_movement()
-        self.jumping()
-    def jumping(self):
+        self.make_jump()
+        self.falling()
+    def falling(self):
         # Character will fall down as y values increase
         if self.fall == True:
-            self.gravity += 1
+            self.gravity += 1  # can make into a function
             self.rect.y += self.gravity
+    def make_jump(self):
         # Character will move on the x axis as it completes the jump   
         if self.jump == True:
-            self.fall = False
+            self.fall = False # can add fall function here
             self.gravity += 1
             self.rect.y += self.gravity
+        #if self.move_right == True:
             self.rect.x += 3
+        #if self.move_left:
+        #    self.rect.x += 3
     def y_axis_movement(self):
         if self.move_right == True:
             self.rect.x += 2
         if self.move_left == True:
             self.rect.x -= 2
+    def floor_reached(self, floor):
+    # check if cat reached the floor # Condition: If cat reached the floor, then it must
+    # be false that he is jumpin
+        if self.rect.bottom >= floor: 
+            self.rect.bottom = floor
+            self.jump = False
+    def range_reached(self, screen_width, screen_lenght, new_pos):
+        if self.rect.left > screen_width:  
+            self.rect.x = new_pos
+    
+class Platform(Rectangle):
+    def __init__(self, file_name, image_width, image_length):
+        super().__init__(file_name, image_width, image_length)
+        self.collision = False
+        self.recent_platform_collide = False
+    def platform_collision(self, other_rect):
+        self.collision = pg.Rect.colliderect(other_rect.rectangle, self.rectangle)
+        # Keep character on top of platform
+        if self.collision:
+            other_rect.physics.jump = False
+            other_rect.rectangle.bottom = self.rectangle.top
+            self.recent_platform_collide = True
+            self.collision = pg.Rect.colliderect(other_rect.rectangle, self.rectangle)
+            # falls when outside platform
+        if other_rect.rectangle.x > self.rectangle.x and self.recent_platform_collide == True:
+            other_rect.physics.jump = True
+            self.recent_platform_collide = False
 
 # start pygame
 pg.init()
@@ -79,13 +109,11 @@ screen = pg.display.set_mode((screen_width, screen_length))
 pg.display.set_caption('Space Cat')
 clock = pg.time.Clock()
 
-# Import images
-space_background = pg.image.load('media/background3Medium.jpeg').convert()
-bat = pg.image.load('media/bat-x1.gif').convert_alpha()
-
+# Import background
+background = pg.image.load('media/background3Medium.jpeg').convert()
 
 # create the rectangles of each surface
-platform = Rectangle('media/ground.png', 90, 50)
+platform = Platform('media/ground.png', 90, 50)
 cat = Rectangle('media/cat.png', 80, 80)
 bat = Rectangle('media/bat-x1.gif', 80, 80)
 
@@ -127,42 +155,27 @@ while running:
                 cat.physics.move_left = False
 
     # Display the background on the window
-    screen.blit(space_background, (-100, 0))
-    screen.blit(space_background, (0, 0))
-    screen.blit(space_background, (100, 0))
-    screen.blit(space_background, (550 , 0))
+    screen.blit(background, (-100, 0))
+    screen.blit(background, (0, 0))
+    screen.blit(background, (100, 0))
+    screen.blit(background, (550 , 0))
     
     #Display Platform
     screen.blit(platform.image, platform.rectangle)
     
+    # Check for user actions
     cat.physics.move()
     
-    # Collision with platform
-    collide_platform = pg.Rect.colliderect(cat.rectangle, platform.rectangle)
-    
-    # Keep cat on top of platform
-    if collide_platform:
-        cat.physics.jump = False
-        #cat_jump = False
-        cat.rectangle.bottom = platform.rectangle.top
-        recent_platform_collide = True
-    
-    # Cat falls when outside platform
-    if cat.rectangle.x > platform.rectangle.x and recent_platform_collide == True:
-        cat.physics.fall = True
-        recent_platform_collide = False
+    # Check for collision with platform
+    platform.platform_collision(cat)
     
     # check if cat reached the floor
-    #Condition: If cat reached the floor, then it must
-    # be false that he is jumping
-    if cat.rectangle.bottom >= floor: 
-        cat.rectangle.bottom = floor
-        cat.physics.jump = False
+    cat.physics.floor_reached(floor)
     
     # check if the cat goes out of the screen's range
-    if cat.rectangle.left > screen_width:  
-        cat.rectangle.x = 0
+    cat.physics.range_reached(screen_width, screen_length, 0)
     
+    # Display Cat Character
     screen.blit(cat.image, cat.rectangle)
     
     # Bat movements: Moves from left to right
