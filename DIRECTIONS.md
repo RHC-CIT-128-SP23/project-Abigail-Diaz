@@ -45,11 +45,15 @@ The student provided rubric is worth 75 points and is specific to the individual
     * Student verbally describes how to start and use the application. (5pt)
     * Student discusses the testing process as part of the project and the verbal description matches the written description. (5pt)
 * **Student Grading Rubric (75pt)**
-  * Program's Controls (10 pt)
+  * Program's Controls (15 pt)
     1. Allow user to move character to the right and to the left using right and left keyboard keys. (5 pt)
     2. Allow user to make the character jump by pressing the space bar key. (5 pt)
-  * Sub Grading Description 2 (X pt)
-  * Sub Grading Description 3 (X pt)
+    3. Allow the user to attack enemies by pressing the [shift] key. (5 pt)
+  * Enemy Actions (5 pt)
+    1. Have an appropiate number of enemies spawn from the right of the screen, wheather the character is moving forward or not. (5 pt)
+  * Platform Actions (10 pt)
+    1. Have an appropiate number of platforms that appear as the background scrolls to the left. (5 pt)
+    2. The platform allows the character to stay on top of it once the character jumps on top. (5 pt)
   * Sub Grading Description 4 (X pt)
   * Sub Grading Description 5 (X pt)
 
