@@ -7,121 +7,60 @@
 
 import pygame as pg
 import sys
-
-class Surface:
-    def __init__(self, file_name, image_width, image_length):
-        self.file_name = file_name
-        self.image_width = image_width
-        self.image_length = image_length
-        self.set_surface_image()
-        self.surf_image = self.get_image()
-    # Import images
-    def set_surface_image(self):
-        self.surf_image = pg.image.load(self.file_name).convert_alpha()
-        self.resize_image()
-    def get_image(self):
-        return self.surf_image
-    def resize_image(self):
-        self.surf_image = pg.transform.smoothscale(self.surf_image, (self.image_width, self.image_length))
-    
-class Rectangle (Surface):
-    def __init__(self, file_name, image_width, image_length):
-        super().__init__(file_name, image_width, image_length)
-        self.rectangle = self.get_rectangle()
-        self.physics = Physics(self.rectangle)
-    def get_rectangle(self): # create the rectangles of each surface
-        self.image = self.surf_image
-        return self.image.get_rect(midbottom = (0, 420 + 30)) #fix vague numbers
-    def set_position(self, x, y):
-        self.rectangle.x = x
-        self.rectangle.y = y
-    def set_fall(self, boolean_factor):
-        self.physics.fall = boolean_factor
-
-class Physics:
-    def __init__(self, rect):
-        self.rect = rect
-        self.jump = False
-        self.fall = False
-        self.gravity = 0
-        self.move_right = False
-        self.move_left = False
-    def move(self):
-        self.y_axis_movement()
-        self.make_jump()
-        self.falling()
-    def falling(self):
-        # Character will fall down as y values increase
-        if self.fall == True:
-            self.gravity += 1  # can make into a function
-            self.rect.y += self.gravity
-    def make_jump(self):
-        # Character will move on the x axis as it completes the jump   
-        if self.jump == True:
-            self.fall = False # can add fall function here
-            self.gravity += 1
-            self.rect.y += self.gravity
-        #if self.move_right == True:
-            self.rect.x += 3
-        #if self.move_left:
-        #    self.rect.x += 3
-    def y_axis_movement(self):
-        if self.move_right == True:
-            self.rect.x += 2
-        if self.move_left == True:
-            self.rect.x -= 2
-    def floor_reached(self, floor):
-    # check if cat reached the floor # Condition: If cat reached the floor, then it must
-    # be false that he is jumpin
-        if self.rect.bottom >= floor: 
-            self.rect.bottom = floor
-            self.jump = False
-    def range_reached(self, screen_width, screen_lenght, new_pos):
-        if self.rect.left > screen_width:  
-            self.rect.x = new_pos
-    
-class Platform(Rectangle):
-    def __init__(self, file_name, image_width, image_length):
-        super().__init__(file_name, image_width, image_length)
-        self.collision = False
-        self.recent_platform_collide = False
-    def platform_collision(self, other_rect):
-        self.collision = pg.Rect.colliderect(other_rect.rectangle, self.rectangle)
-        # Keep character on top of platform
-        if self.collision:
-            other_rect.physics.jump = False
-            other_rect.rectangle.bottom = self.rectangle.top
-            self.recent_platform_collide = True
-            self.collision = pg.Rect.colliderect(other_rect.rectangle, self.rectangle)
-            # falls when outside platform
-        if other_rect.rectangle.x > self.rectangle.x and self.recent_platform_collide == True:
-            other_rect.physics.jump = True
-            self.recent_platform_collide = False
+import math
+from Enemy import Enemy
+from Player import Player
 
 # start pygame
 pg.init()
 
 screen_width, screen_length = 850, 420
 floor = 420
+background_scroll = 0
+
+cat_image_file_paths =[]
+eye_image_file_paths = []
 
 # Set window display
 screen = pg.display.set_mode((screen_width, screen_length))
 pg.display.set_caption('Space Cat')
 clock = pg.time.Clock()
+time = 60
 
 # Import background
-background = pg.image.load('media/background3Medium.jpeg').convert()
+background = pg.image.load('media/background.jpg').convert()
+background = pg.transform.smoothscale(background, (screen_width, screen_length))
 
-# create the rectangles of each surface
-platform = Platform('media/ground.png', 90, 50)
-cat = Rectangle('media/cat.png', 80, 80)
-bat = Rectangle('media/bat-x1.gif', 80, 80)
+tiles = math.ceil(screen_width / background.get_width()) + 1
 
-platform.set_position(screen_width/2, screen_length/2)
-bat.set_position(screen_width, floor - 10)
+# Set starting position of surfaces
+#platform.set_position(screen_width/2, screen_length/2)
 
-# Cat Actions
-recent_platform_collide = False
+# Resize platform
+#platform.resize_image(60, 60)
+
+# Save the file names in an array
+for item in range(6):
+    cat_image_file_paths.append(f"media/cat_walk_{item + 1}.png")
+
+for item in range(3):
+    eye_image_file_paths.append(f'media/eye_{item + 1}.png')
+
+# create objects
+#platform = Platform(90, 50)
+cat = Player(cat_image_file_paths, 80, 80)
+eye = Enemy(eye_image_file_paths, 80, 80)
+
+#platform.file_names.append('media/ground.png')###
+
+cat.initialize_sprite()
+cat.set_position(400, floor)
+
+#platform.initialize_sprite()#########
+#platform.set_position(screen_width/2, screen_length/2)###
+
+eye.initialize_sprite()
+eye.set_position(screen_width/2, screen_length/2)
 
 # Assume game is running
 running = True
@@ -134,57 +73,67 @@ while running:
     
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_SPACE:
-                cat.physics.gravity = -20
-                #player_gravity = -20  # make a physics.gravity.cat (a physics class that takes an object from the rectangle class)
-                #cat_jump = True         # as an argument
-                cat.physics.jump = True
+                cat.gravity = -20
+                cat.jump = True
         
         # move cat right with -> key
         if event.type ==  pg.KEYDOWN:
             if event.key == pg.K_RIGHT:
-                cat.physics.move_right = True      # number of steps to the right
-                cat.physics.move_left = False
-            elif event.key == pg.K_LEFT:
-                cat.physics.move_left = True
-                cat.physics.move_right = False
+                cat.update_spr = True
+                #cat.direction["right"] = True #########
+                cat.move_left = False
+                
+            if event.key == pg.K_LEFT:
+                cat.move_left = True
+                cat.direction["right"] = False
+                cat.update_spr = True
         
         if event.type == pg.KEYUP:
             if event.key == pg.K_RIGHT or event.key == pg.K_LEFT:
                 #stop the cat
-                cat.physics.move_right = False
-                cat.physics.move_left = False
+                cat.direction["right"] = False
+                cat.move_left = False
+                cat.update_spr = False
 
     # Display the background on the window
     screen.blit(background, (-100, 0))
     screen.blit(background, (0, 0))
     screen.blit(background, (100, 0))
     screen.blit(background, (550 , 0))
+
+    i = 0
+    while(i < tiles and cat.update_spr):
+        screen.blit(background, (background.get_width()*i + background_scroll, 0))
+        i += 1
+        background_scroll -= .8
+    
+    if abs(background_scroll) > background.get_width():
+        background_scroll = 0
     
     #Display Platform
-    screen.blit(platform.image, platform.rectangle)
+    #screen.blit(platform.surf_image, platform.rect)#####
     
     # Check for user actions
-    cat.physics.move()
+    cat.move()
     
-    # Check for collision with platform
-    platform.platform_collision(cat)
+    # Check for collision
+    #platform.platform_collision(cat)#########
     
     # check if cat reached the floor
-    cat.physics.floor_reached(floor)
+    cat.floor_reached(floor)
     
     # check if the cat goes out of the screen's range
-    cat.physics.range_reached(screen_width, screen_length, 0)
-    
+    cat.range_reached(screen_width, screen_length, 0)
+
     # Display Cat Character
-    screen.blit(cat.image, cat.rectangle)
-    
-    # Bat movements: Moves from left to right
-    bat.rectangle.right -= 1
-    screen.blit(bat.image, bat.rectangle)
-    
-    # check if the bat goes out of the screen's range    
-    if bat.rectangle.left < 0:
-        bat.rectangle.left = screen_width
+    cat.update_sprite() # can add more animations here later
+    screen.blit(cat.surf_image, cat.rect)
+
+    # Enemy action
+    eye.move()
+    eye.update_spr = True
+    eye.update_sprite()
+    screen.blit(eye.surf_image, eye.rect)
     
     #update screen
     pg.display.flip()
