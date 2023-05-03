@@ -11,7 +11,7 @@ CIT 128 Student Directed Project
 
 ## Program Description
 
-My project is a platform game where a cat must pass the level wihout loosing all lives. 
+My project is a platform game where a cat must pass the level without loosing all lives. 
 The cat must jump and move forward while avoiding obstacles and enemies.
 The goal of the program is to provide a simple game that works smoothly with the player's input and
 without errors that would ruin the gaming experience. The program will let the user know if they
@@ -25,7 +25,7 @@ Add a Link to your video demonstration
 
 Add any install instructions, if needed. This includes how to install included modules or libraries as well as configurations. You may remove this section if no special instructions are required.
 
-Required modules: Pygame
+Required modules: Pygame, math
 
 Installing Pygame module 
 
@@ -47,10 +47,11 @@ The software engeneering techniques from the Software Development Life Cycle (SD
 
 Describe the testing process using paragraphs and numbered bullet lists how to manually test the software here. 
 
-- Press [space bar] to check if the character jumps
+- Press [space bar] to check if the character jumps.
 - Press right keyboard key to check if the character moves to the right
-- Press left keyboard key to check if the character moves to the left
-- Jump on top of a platform to see if character stays on top of the platform
+- Check if character moves to the left by pressing the left keyboard key.
+- Check if the character walk animation is active while pressing the right key.
+- Jump on top of a platform to confirm the character stays on top of the platform.
 - Walk off the platform with either the left or right keyboard key to see if character falls off the platform
   without needing to press the space bar.
 
