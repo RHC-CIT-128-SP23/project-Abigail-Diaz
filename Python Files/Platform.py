@@ -1,21 +1,68 @@
-from Rectangle import Rectangle
-import pygame as pg
 
-class Platform(Rectangle):
-    def __init__(self, file_name, image_width, image_length):
-        super().__init__(file_name, image_width, image_length)
-        self.collision = False
-        self.recent_platform_collide = False
-    def platform_collision(self, other_rect):
-        self.collision = self.rect.colliderect(other_rect.rect)
-        # Keep character on top of platform
-        if self.collision == True:
-            print('collision!')
-            other_rect.jump = False
-            other_rect.rect.bottom = self.rect.top
-            self.recent_platform_collide = True
-            # falls when outside platform
-        if (other_rect.rect.x > self.rect.x or other_rect.rect.x < self.rect.x) and self.recent_platform_collide == True:
-            other_rect.jump = True
-            other_rect.fall = True
-            self.recent_platform_collide = False
+import pygame as pg
+from Sprites import Sprite
+from Rectangle import Rectangle
+from Levels import *
+
+tile_size = 64
+screen_width, screen_length = 850, tile_size * len(level_map)
+
+
+class Tile (pg.sprite.Sprite):
+    def __init__(self, pos, size):
+        super().__init__()
+        self.image = pg.Surface((size, size))
+        self.image.fill('grey')
+        self.rect = self.image.get_rect(topleft = pos)
+
+    def get_tile_position(self):
+        return (self.rect.x, self.rect.y)
+    
+    def get_tile_rect(self):
+        return self.rect
+    
+    def update(self, x_shift):
+        self.rect.x += x_shift
+
+
+class Level:
+    def __init__(self, surface):
+        self.surface = surface
+        self.setup_level(level_map)
+        self.background = pg.image.load('media/background.jpg').convert()
+        self.background = pg.transform.smoothscale(self.background, (screen_width, screen_length))
+        self.shift = 0
+        
+
+    def setup_level(self, layout):
+        self.tiles = pg.sprite.Group()
+        for row_index, row in enumerate(layout):
+            for col_index, col in enumerate(row):
+                if col == 'x':
+                    x = col_index * tile_size
+                    y = row_index * tile_size
+                    tile = Tile((x, y), tile_size)
+                    self.tiles.add(tile)
+
+    def set_next_layout(self):
+        pass
+
+    def run(self):
+        self.tiles.update(self.shift)
+        self.surface.blit(self.background, (0, 0))
+        self.tiles.draw(self.surface)
+    
+    def get_collision_coordinate(self, sprite):
+        self.x_collision = 0
+        self.y_collision = 0
+        for tiles in self.tiles:
+            if pg.sprite.collide_mask(sprite, tiles):
+                self.x_collision, self.y_collision = tiles.get_tile_position()
+        return (self.x_collision, self.y_collision)
+    
+    def get_collision_rect(self, sprite):
+        self.collision_rect = None
+        for t in self.tiles:
+            if t.rect.colliderect(sprite.rect):
+                self.collision_rect = t.get_tile_rect()
+                return self.collision_rect
