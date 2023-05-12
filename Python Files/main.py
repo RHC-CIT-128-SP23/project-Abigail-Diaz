@@ -21,7 +21,7 @@ pg.init()
 
 floor = 420
 fps = 60
-
+non_col = 0
 
 # Set window display
 screen = pg.display.set_mode((screen_width, screen_length))
@@ -62,7 +62,7 @@ cat_physics = Physics(cat.rect)
 # Holds current level map
 level = Level(screen)
 
-
+# Enemy object
 
 #eye = Enemy(eye_image_file_paths, 80, 80)
 #platform = Platform(platform_image_file_paths, 90, 80)
@@ -91,7 +91,7 @@ while running:
         
         if event.type ==  pg.KEYDOWN:
             if event.key == pg.K_RIGHT:
-                #cat.update_current_sprite('walk')
+                cat.update_current_sprite('walk')
                 cat.update_spr = True
                 cat_physics.move_right = True
                 cat_physics.direction['left'] = False
@@ -99,7 +99,7 @@ while running:
                 cat_physics.move_left = False
     
             if event.key == pg.K_LEFT:
-                #cat.update_current_sprite('walk')
+                cat.update_current_sprite('walk')
                 cat_physics.move_left = True
                 cat_physics.move_right= False
                 cat_physics.direction["right"] = False
@@ -108,7 +108,7 @@ while running:
         
         if event.type == pg.KEYUP:
             if event.key == pg.K_RIGHT or event.key == pg.K_LEFT:
-                #cat.update_current_sprite('idle')
+                cat.update_current_sprite('idle')
                 cat.update_spr = True
                 cat_physics.direction["right"] = False
                 cat_physics.move_left = False
@@ -132,34 +132,71 @@ while running:
     collision = pg.sprite.spritecollide(cat, level.tiles, False, pg.sprite.collide_mask)
     
     if collision:
+        non_col = 0
         cat_physics.fall = False
         cat_physics.jump = False
-    
+        cat_col = cat.rect.bottom
+        
+        print('1: IN collision')
         collision_rect = level.get_collision_rect(cat)
+        rect_col = collision_rect.top
+        
+    
+        
 
         if cat_physics.direction['up']:    
             on_floor = False
 
-        if  ((cat.rect.left < collision_rect.right) or (cat.rect.right > collision_rect.left)) and abs((cat.rect.bottom - collision_rect.top)) < 20:
+       # print('1: (cat.rect.left < collision_rect.right): ', (cat.rect.left < collision_rect.right))
+        #print('2: (cat.rect.left < collision_rect.right): ', (cat.rect.right > collision_rect.left))
+        #print('3: abs((cat.rect.bottom - collision_rect.top)) < 40:  ', abs((cat.rect.bottom - collision_rect.top)) < 20)
+        print('cat.rect.bottom:', cat.rect.bottom)
+        print('collision_rect.top:', collision_rect.top)
+        #rint('cat.rect.top: ', cat.rect.top)
 
+            # Upon collision, check if cat is on top of a rectangle
+        if  ((cat.rect.left < collision_rect.right or cat.rect.right > collision_rect.left) and ((abs(cat.rect.bottom - collision_rect.top) < 50))):
+            cat_physics.fall = False
+        #if (((cat.rect.right > collision_rect.left) and (cat.rect.right < collision_rect.right)) or (cat.rect.left > collision_rect.left and cat.rect.left < collision_rect.left)) and ((abs(cat.rect.bottom - collision_rect.top) < 20)):
+            print('2: In collision')
             # Cat collision was with the floor (collision on top of a top or free standing tile)
-            if abs((cat.rect.bottom - collision_rect.top)) < 20:
+            if (abs(cat.rect.bottom - collision_rect.top)) < 50:
                 cat_physics.direction['down'] = False # False since there was a collision with the ground
                 cat.rect.bottom = collision_rect.top + 0.5
-                print('cat.rect.bottom: ', cat.rect.bottom)
-                print('collision_rect.top :', collision_rect.top )
-                print('floor assignment')
+                #print('floor assignment')
                 on_floor = True
-
-        elif cat_physics.direction['right'] and collision_rect.x > cat.rect.x and (cat.rect.bottom > collision_rect.top ):
+        
+             # check for bottom collision
+        elif  ((cat.rect.left < collision_rect.right or cat.rect.right > collision_rect.left) and (abs(cat.rect.top - collision_rect.bottom) < 20)):
+            print('bottom collision')
+            #cat_physics.fall = True
+            cat_physics.repel_down()
+        
+        #elif cat_physics.direction['right'] and collision_rect.x > cat.rect.x and (cat.rect.bottom > collision_rect.top):
+        elif collision_rect.right > cat.rect.right and (cat.rect.bottom > collision_rect.top):
+            cat_physics.fall = False
             cat_physics.repel_to_left()
-    
-        elif cat_physics.direction['left'] and collision_rect.x < cat.rect.x and (cat.rect.bottom > collision_rect.top):
-            cat_physics.repel_to_right()    
-    else:
-        cat_physics.fall = True
-        cat_physics.direction['down'] = True
+            
 
+        #elif cat_physics.direction['left'] and collision_rect.x < cat.rect.x and (cat.rect.bottom > collision_rect.top):
+        elif collision_rect.left < cat.rect.left and (cat.rect.bottom > collision_rect.top):
+            cat_physics.repel_to_right()
+            cat_physics.fall = False
+
+    else:
+        if non_col > 4:
+            cat_physics.fall = True
+            print('greater than 3')
+        print('else')
+        cat_physics.direction['down'] = True
+        non_col += 1
+
+    if cat_physics.direction['right']:
+        print('greater than 600')
+        level.move_screen_forward(-1)
+    
+    if cat_physics.direction['left']:
+        level.move_screen_forward(1)
     
     '''Enemy Eye Actions'''
     # Enemy action
