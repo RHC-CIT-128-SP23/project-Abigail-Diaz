@@ -3,6 +3,8 @@ import pygame as pg
 from Sprites import Sprite
 from Rectangle import Rectangle
 from Levels import *
+import pytmx
+from Enemy import Enemy
 
 tile_size = 64
 screen_width, screen_length = 850, tile_size * len(level_map)
@@ -29,13 +31,14 @@ class Level:
     def __init__(self, surface):
         self.surface = surface
         self.setup_level(level_map)
-        self.background = pg.image.load('media/background.jpg').convert()
+        self.background = pg.image.load('media/Galaxy12.jpg').convert()
         self.background = pg.transform.smoothscale(self.background, (screen_width, screen_length))
         self.shift = 0
         
 
     def setup_level(self, layout):
         self.tiles = pg.sprite.Group()
+        self.enemies = pg.sprite.Group()
         for row_index, row in enumerate(layout):
             for col_index, col in enumerate(row):
                 if col == 'x':
@@ -43,6 +46,11 @@ class Level:
                     y = row_index * tile_size
                     tile = Tile((x, y), tile_size)
                     self.tiles.add(tile)
+                if col == 'E':
+                    x = col_index * tile_size
+                    y = row_index * tile_size
+                    enemy = Enemy(x, y, 90, 90)
+                    self.enemies.add(enemy)
 
     def set_next_layout(self):
         pass
@@ -51,6 +59,7 @@ class Level:
         self.tiles.update(self.shift)
         self.surface.blit(self.background, (0, 0))
         self.tiles.draw(self.surface)
+        self.enemies.draw(self.surface)
     
     def get_collision_coordinate(self, sprite):
         self.x_collision = 0
@@ -66,3 +75,6 @@ class Level:
             if t.rect.colliderect(sprite.rect):
                 self.collision_rect = t.get_tile_rect()
                 return self.collision_rect
+            
+    def move_screen_forward(self, x_shift):
+        self.tiles.update(x_shift)
