@@ -5,6 +5,7 @@ from Rectangle import Rectangle
 from Levels import *
 import pytmx
 from Enemy import Enemy
+import random
 
 tile_size = 64
 screen_width, screen_length = 850, tile_size * len(level_map)
@@ -49,17 +50,18 @@ class Level:
                 if col == 'E':
                     x = col_index * tile_size
                     y = row_index * tile_size
-                    enemy = Enemy(x, y, 90, 90)
+                    enemy = Enemy(x, y, 50, 50)
                     self.enemies.add(enemy)
 
     def set_next_layout(self):
         pass
 
     def run(self):
-        self.tiles.update(self.shift)
+        self.enemies.update(-2) 
         self.surface.blit(self.background, (0, 0))
         self.tiles.draw(self.surface)
         self.enemies.draw(self.surface)
+        self.respawn()
     
     def get_collision_coordinate(self, sprite):
         self.x_collision = 0
@@ -75,6 +77,41 @@ class Level:
             if t.rect.colliderect(sprite.rect):
                 self.collision_rect = t.get_tile_rect()
                 return self.collision_rect
-            
+    def get_enemy_collision_rect(self, sprite):
+        self.collision_rect = None
+        for t in self.enemies:
+            if t.rect.colliderect(sprite.rect):
+                self.collision_rect = t.get_enemy_rect()
+                return self.collision_rect
+
     def move_screen_forward(self, x_shift):
         self.tiles.update(x_shift)
+    
+    def get_enemy_collision(self, obj):
+        collision = pg.sprite.spritecollide(obj, self.enemies, False, pg.sprite.collide_mask)
+        collision_rect = self.get_collision_rect(obj)
+
+        # left collision
+        if obj.rect.x < collision_rect.x:
+            collision_type = 1
+        if obj.rect.x < collision_rect.x:
+            collision_type = 2
+
+        return (collision, collision_type)
+    
+    def respawn(self):
+        if len(self.enemies) > 1:
+            self.list_of_alive_sprites = self.enemies.sprites()
+
+            # check if enemy sprite is out of range
+            for sprite in self.list_of_alive_sprites:
+                if sprite.rect.x < 0:
+                    print('enemy gone out of range')
+                    self.enemies.remove(sprite) # remove if out of range
+        else:
+            print('empty')
+            for num in range(20):
+                rand = random.randint(200, 500)
+                rand2 = random.randint(800, 1000)
+                enemy = Enemy(rand2, rand, 50, 50)
+                self.enemies.add(enemy)

@@ -3,7 +3,7 @@ import copy
 import pygame as pg
 
 class Physics:
-    def __init__(self, rect): # had a rect as an argument , should have a rectangle object instead, passed
+    def __init__(self, rect):
         self.rect = rect
         self.jump = False
         self.fall = True
@@ -13,10 +13,9 @@ class Physics:
         self.left_axis_movement = False
         self.velocity = 0
         self.direction = {"right": False, "left": False, 'down': True, 'up': False}
-        #self.direction = pg.math.Vector2(0,0)
         self.current_direction = None
     
-    def move(self): # place on constructor
+    def move(self): 
         self.movement()
         self.check_if_jumping()
         self.falling()
@@ -25,23 +24,20 @@ class Physics:
         # Character will fall down as y values increase
         if self.fall == True:
             self.direction['up'] = False
-            self.gravity += 0.5  # can make into a function
+            self.gravity += 0.5  
             self.rect.y += self.gravity # gravity is never set back to zero
     
     def check_if_jumping(self):
-
         # Character will move on the x axis as it completes the jump
         if self.jump == True:
-            self.fall = True # can add fall function here
-            #self.gravity += 1
-            #self.rect.y += self.gravity
+            self.fall = True 
             self.direction['down'] = True
             if self.move_left:
-                #self.rect.x -= 5
-                pass
+                self.rect.x -= 5
+                
             elif self.move_right:
-                #self.rect.x += 5
-                pass
+                self.rect.x += 2
+                
     
     def make_jump(self):
         self.jump = True
@@ -63,11 +59,11 @@ class Physics:
 
     def movement(self):
         if self.move_right:
-            #self.rect.x += 2
-            pass
+            self.rect.x += 2 # delete
+            
         if self.move_left == True:
-            #self.rect.x -= 2
-            pass
+            self.rect.x -= 2
+            
 
     def floor_reached(self, floor):
         '''check if cat reached the floor # Condition: If cat reached the floor, then it must be false that he is jumping'''
@@ -77,8 +73,8 @@ class Physics:
     
     def range_reached(self, screen_width, screen_lenght, new_pos):
         '''Reset cat position the the start (left) of the screen if it goes out of the screen's range'''
-        if self.rect.left > screen_width:  
-            self.rect.x = new_pos
+        if self.rect.left < 0:  
+            self.rect.x = 25
     
     def set_position(self, x, y):
         self.rect.x = x
@@ -87,14 +83,13 @@ class Physics:
     def repel_to_left(self):
         '''Repel character to the left by decreasing x value '''
         print('left repelled')
-        self.rect.x -= 5
-     
+        self.rect.x -= 2
 
     def repel_to_right(self):
         '''Repel character to the righ by increasing x value'''
         print('right repelled')
         self.rect.x += 5
-       
+
     
     def repel_down(self):
         '''Repel character down by incresing its y value'''
