@@ -18,6 +18,7 @@ import random
 from Fire import Fire
 from Shoot import Shoot
 from Levels import *
+from Sound import Sound
 
 
 # start pygame
@@ -33,6 +34,7 @@ press_x_key_count = 0
 screen = pg.display.set_mode((screen_width, screen_length))
 pg.display.set_caption('Space Cat')
 clock = pg.time.Clock()
+sound = Sound()
 
 
 # Store file paths for each sprite image 
@@ -67,14 +69,14 @@ cat_sprites_file_paths['idle'] = cat_idle_sprites_file_paths
 cat_sprites_file_paths['damage'] = cat_damage_sprites_file_paths
 
 # create objects 
-cat = Player(400, floor - 100,  60, 40, cat_sprites_file_paths)
+cat = Player(120, 281,  60, 40, cat_sprites_file_paths)
 cat_physics = Physics(cat.rect)
 
 # Holds current level map
 level = Level(screen)
 counter = Counter(screen)
-
 shoot = Shoot(90, 90, cat, level.enemies, screen)
+sound.play_background_music()
 
 running = True
 
@@ -133,13 +135,14 @@ while running:
 
     level.run()
     counter.run()
+    #sound.play_background_music()
 
     # Activate the fire sprite group display and sprite update
     shoot.run()
     
     ''' Cat Actions'''
     # Activate physics function checks
-    cat_physics.move()
+    cat_physics.move(level)
     
     # check if the cat goes out of the screen's range
     cat_physics.range_reached(screen_width, screen_length, 0)
@@ -159,9 +162,8 @@ while running:
             cat.update_current_sprite('damage')
             cat.rect.x += 70
         counter.collision()
-        
-    if cat_physics.direction['right']  and cat.rect.x > 400:
-        level.move_screen_forward(-4)
+
+    
 
     collision = pg.sprite.spritecollide(cat, level.tiles, False, pg.sprite.collide_mask)
     
@@ -184,6 +186,11 @@ while running:
             if (abs(cat.rect.bottom - collision_rect.top)) < 50:
                 cat.rect.bottom = collision_rect.top + 0.5
             
+            if cat_physics.direction['right']:# and cat.rect.x > 200
+                level.move_screen_forward(-2) 
+
+            print('x pos: ', cat.rect.x)
+            print('y pos: ', cat.rect.y)
 
         elif  ((cat.rect.left < collision_rect.right or cat.rect.right > collision_rect.left) and (abs(cat.rect.top - collision_rect.bottom) < 20)):
             print('bottom collision')
