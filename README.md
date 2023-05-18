@@ -55,7 +55,7 @@ Describe the testing process using paragraphs and numbered bullet lists how to m
   
   ## Cat Testing
    1. Upon starting the game, the cat's initial position should be near the start (left side) of the screen.
-   2. The cat should stay idling it isn't moving forwards or backwards due to user input. 
+   2. The cat should stay idling if it isn't moving forwards or backwards due to user input. 
    3. Press [space bar] to check if the cat jumps.
    4. Press right keyboard key to check if the character moves to the right.
    5. Press left keyboard key to check if character moves to the left.
