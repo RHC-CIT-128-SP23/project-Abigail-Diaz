@@ -15,9 +15,9 @@ class Physics:
         self.direction = {"right": False, "left": False, 'down': True, 'up': False}
         self.current_direction = None
     
-    def move(self): 
+    def move(self, level): 
         self.movement()
-        self.check_if_jumping()
+        self.check_if_jumping(level)
         self.falling()
     
     def falling(self):
@@ -27,7 +27,7 @@ class Physics:
             self.gravity += 0.5  
             self.rect.y += self.gravity # gravity is never set back to zero
     
-    def check_if_jumping(self):
+    def check_if_jumping(self, level):
         # Character will move on the x axis as it completes the jump
         if self.jump == True:
             self.fall = True 
@@ -36,7 +36,9 @@ class Physics:
                 self.rect.x -= 5
                 
             elif self.move_right:
-                self.rect.x += 2
+                self.rect.x += 1
+                level.move_screen_forward(-2)
+                
                 
     
     def make_jump(self):
