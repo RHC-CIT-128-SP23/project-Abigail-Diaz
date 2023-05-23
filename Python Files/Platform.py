@@ -1,10 +1,10 @@
 
 import pygame as pg
 from Sprites import Sprite
-from Rectangle import Rectangle
 from Levels import *
 import pytmx
 from Enemy import Enemy
+from Flag import Flag
 import random
 
 tile_size = 64
@@ -35,11 +35,13 @@ class Level:
         self.background = pg.image.load('media/Galaxy12.jpg').convert()
         self.background = pg.transform.smoothscale(self.background, (screen_width, screen_length))
         self.shift = 0
+        self.distance_traveled = 0
         
 
     def setup_level(self, layout):
         self.tiles = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
+        self.flags = pg.sprite.Group()
         for row_index, row in enumerate(layout):
             for col_index, col in enumerate(row):
                 if col == 'x':
@@ -47,20 +49,31 @@ class Level:
                     y = row_index * tile_size
                     tile = Tile((x, y), tile_size)
                     self.tiles.add(tile)
+                if col == 'F':
+                    x = col_index * tile_size
+                    y = row_index * tile_size
+                    flag = Flag(x, y, 100, 100)
+                    self.flags.add(flag)
                 if col == 'E':
                     x = col_index * tile_size
                     y = row_index * tile_size
                     enemy = Enemy(x, y, 50, 50)
                     self.enemies.add(enemy)
+                
 
     def set_next_layout(self):
         pass
 
     def run(self):
         self.enemies.update(-2) 
+        self.flags.update()
         self.surface.blit(self.background, (0, 0))
+        self.flags.draw(self.surface)
         self.tiles.draw(self.surface)
+        
         self.enemies.draw(self.surface)
+        
+        
         self.respawn()
     
     def get_collision_coordinate(self, sprite):
@@ -77,6 +90,7 @@ class Level:
             if t.rect.colliderect(sprite.rect):
                 self.collision_rect = t.get_tile_rect()
                 return self.collision_rect
+    
     def get_enemy_collision_rect(self, sprite):
         self.collision_rect = None
         for t in self.enemies:
@@ -85,7 +99,10 @@ class Level:
                 return self.collision_rect
 
     def move_screen_forward(self, x_shift):
+        self.distance_traveled += abs(x_shift)
+        print('distance traveled:', self.distance_traveled)
         self.tiles.update(x_shift)
+        self.flags.update(x_shift)
     
     def get_enemy_collision(self, obj):
         collision = pg.sprite.spritecollide(obj, self.enemies, False, pg.sprite.collide_mask)
@@ -110,8 +127,13 @@ class Level:
                     self.enemies.remove(sprite) # remove if out of range
         else:
             print('empty')
-            for num in range(20):
-                rand = random.randint(200, 500)
-                rand2 = random.randint(800, 1000)
-                enemy = Enemy(rand2, rand, 50, 50)
+            for num in range(25):
+                randy = random.randint(1, 800)
+                randx = random.randint(800, 2000)
+                enemy = Enemy(randx, randy, 50, 50)
                 self.enemies.add(enemy)
+    
+    def restart(self):
+        self.move_screen_forward(self.distance_traveled)# rename just move_screen
+        self.distance_traveled = 0
+        
