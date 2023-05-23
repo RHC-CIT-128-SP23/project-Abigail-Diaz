@@ -1,5 +1,6 @@
 import pygame as pg
 from Fire import Fire
+from Sound import Sound
 
 class Shoot:
     def __init__(self, image_width, image_length, shooting_obj, damaged_obj, surface):
@@ -13,6 +14,8 @@ class Shoot:
         self.fire_sprite_group.add(self.fire)
         self.shooting_obj = shooting_obj
         self.damaged_obj = damaged_obj
+        self.sound = Sound()
+        
 
     def run(self): # try to put on one event  x press
         ''' Activate the fire sprite group display and sprite update'''
@@ -23,8 +26,8 @@ class Shoot:
         
         #creates a new fire object if player is shooting
     def attack(self): # might have to change initial position here
-        #if self.shooting:
             self.make_another_fire()
+            self.sound.play_shot_sound()
 
     def make_another_fire(self):
         new_fire = self.fire = Fire(50, 50, self.shooting_obj)
@@ -34,13 +37,13 @@ class Shoot:
         pass
 
     def shot(self):
-        self.collision = pg.sprite.groupcollide(self.damaged_obj, self.fire_sprite_group, True, True) # collision between two groups #, pg.sprite.collide_mask
+        self.collision = pg.sprite.groupcollide(self.damaged_obj, self.fire_sprite_group, True, True) # collision between two groups 
         
         if len(self.damaged_obj) < 1:
             print('empty')
 
         if self.collision:
-            self.fire_sprite_group.update('explode')
+            self.fire_sprite_group.update('hits')
         else:
-            self.fire_sprite_group.update('idle')
+            self.fire_sprite_group.update('spark')
     
