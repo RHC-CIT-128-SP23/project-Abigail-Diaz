@@ -2,7 +2,6 @@
 import pygame as pg
 from Menu import Menu
 
-
 class Counter():
     def __init__(self, screen, player, level):
         self.flag_width = 50
@@ -11,7 +10,6 @@ class Counter():
         self.posy = 409
         self.health_bar_posx = screen.get_width() - 150
         self.health_bar_posy = screen.get_height() - (screen.get_height() - 10)
-        self.set_image_paths_dict()
         self.health_bar_height = 20
         self.initial_health_bar_length = 100
         self.health_bar_length = self.initial_health_bar_length
@@ -44,14 +42,12 @@ class Counter():
 
         # check if health bar has run out of length
         if self.health_bar_length < 0:
-            print('dead')
             self.lost = True
             self.player.physics.fall = False
             
         else:
             self.green_bar_image = pg.transform.smoothscale(self.original_image, (self.health_bar_length, self.health_bar_height))
 
-    
     def check_lost(self):
         '''Check if player has either fallen off the screen or if lost'''
         
@@ -60,27 +56,12 @@ class Counter():
             self.lost = True
             self.player.physics.fall = False
 
-            self.level.restart()
-            self.player.restart()
-        
         # check if player has lost 
         if self.lost:
+            self.player.lost()
             self.menu.restart_menu()
-    
 
     def restart(self):
         self.lost = False
         self.health_bar_length = self.initial_health_bar_length
         self.green_bar_image = pg.transform.smoothscale(self.original_image, (self.health_bar_length, self.health_bar_height))
-        
-
-    def get_image_paths_array(self, path):
-        self.image_file_paths = []
-        for item in range(5):
-            self.image_file_paths.append(f'{path}{item + 1}.png')
-        return self.image_file_paths
-    
-    def set_image_paths_dict(self):
-        self.image_paths_dict = {'idle': None} 
-        self.image_paths_dict['idle'] = self.get_image_paths_array(f'media/flag_')
-        

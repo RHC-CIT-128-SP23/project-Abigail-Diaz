@@ -10,8 +10,8 @@ import random
 tile_size = 64
 screen_width, screen_length = 850, tile_size * len(level_map)
 
-
 class Tile (pg.sprite.Sprite):
+    '''For tile creation and tile movement'''
     def __init__(self, pos, size):
         super().__init__()
         self.image = pg.Surface((size, size))
@@ -27,8 +27,9 @@ class Tile (pg.sprite.Sprite):
     def update(self, x_shift):
         self.rect.x += x_shift
 
-
 class Level:
+    '''Sets up the level using the Tile objects. Manages enemy object group 
+        and level layout shifting as the player moves forward'''
     def __init__(self, surface):
         self.surface = surface
         self.setup_level(level_map)
@@ -36,7 +37,10 @@ class Level:
         self.background = pg.transform.smoothscale(self.background, (screen_width, screen_length))
         self.shift = 0
         self.distance_traveled = 0
-        
+        self.enemy_speed = -3
+        self.enemy_respawn_rate = 40
+        self.enemy_collision_rect = pg.Rect(0, 0, 10, 10)
+        self.tile_collision_rect = pg.Rect(0, 0, 10, 10)
 
     def setup_level(self, layout):
         self.tiles = pg.sprite.Group()
@@ -59,81 +63,60 @@ class Level:
                     y = row_index * tile_size
                     enemy = Enemy(x, y, 50, 50)
                     self.enemies.add(enemy)
-                
-
-    def set_next_layout(self):
-        pass
 
     def run(self):
-        self.enemies.update(-2) 
+        self.enemies.update(self.enemy_speed) 
         self.flags.update()
         self.surface.blit(self.background, (0, 0))
         self.flags.draw(self.surface)
         self.tiles.draw(self.surface)
-        
         self.enemies.draw(self.surface)
-        
-        
         self.respawn()
     
-    def get_collision_coordinate(self, sprite):
-        self.x_collision = 0
-        self.y_collision = 0
-        for tiles in self.tiles:
-            if pg.sprite.collide_mask(sprite, tiles):
-                self.x_collision, self.y_collision = tiles.get_tile_position()
-        return (self.x_collision, self.y_collision)
-    
-    def get_collision_rect(self, sprite):
-        self.collision_rect = None
+    def get_tile_collision_rect(self, sprite):
         for t in self.tiles:
             if t.rect.colliderect(sprite.rect):
-                self.collision_rect = t.get_tile_rect()
-                return self.collision_rect
+                self.tile_collision_rect = t.get_tile_rect()
+                return self.tile_collision_rect
     
     def get_enemy_collision_rect(self, sprite):
-        self.collision_rect = None
-        for t in self.enemies:
-            if t.rect.colliderect(sprite.rect):
-                self.collision_rect = t.get_enemy_rect()
-                return self.collision_rect
+        
+        for enemy in self.enemies:
+            if enemy.rect.colliderect(sprite.rect):
+                self.enemy_collision_rect = enemy.get_enemy_rect()
+                return self.enemy_collision_rect
 
     def move_screen_forward(self, x_shift):
         self.distance_traveled += abs(x_shift)
-        print('distance traveled:', self.distance_traveled)
         self.tiles.update(x_shift)
         self.flags.update(x_shift)
     
-    def get_enemy_collision(self, obj):
-        collision = pg.sprite.spritecollide(obj, self.enemies, False, pg.sprite.collide_mask)
-        collision_rect = self.get_collision_rect(obj)
-
-        # left collision
-        if obj.rect.x < collision_rect.x:
-            collision_type = 1
-        if obj.rect.x < collision_rect.x:
-            collision_type = 2
-
-        return (collision, collision_type)
-    
     def respawn(self):
+        '''Adds new enemy objects once previous onces are out of the screen'''
+        
         if len(self.enemies) > 1:
             self.list_of_alive_sprites = self.enemies.sprites()
 
             # check if enemy sprite is out of range
             for sprite in self.list_of_alive_sprites:
                 if sprite.rect.x < 0:
-                    print('enemy gone out of range')
-                    self.enemies.remove(sprite) # remove if out of range
+                    # clean up the group from out of range enemies
+                    self.enemies.remove(sprite)
         else:
-            print('empty')
-            for num in range(25):
+            for num in range(self.enemy_respawn_rate):
                 randy = random.randint(1, 800)
                 randx = random.randint(800, 2000)
                 enemy = Enemy(randx, randy, 50, 50)
                 self.enemies.add(enemy)
     
+    def change_enemy_speed(self, speed):
+        self.enemy_speed = speed
+
     def restart(self):
-        self.move_screen_forward(self.distance_traveled)# rename just move_screen
+        '''Sets the level tiles to original position'''
+
+        # subtract distance traveled from current level position
+        self.move_screen_forward(self.distance_traveled)
         self.distance_traveled = 0
-        
+
+        self.enemies.empty()

@@ -3,6 +3,7 @@ import pygame as pg
 from Sprites import Sprite
 
 class Fire(Sprite):
+    '''For fire sprite creation and position update'''
     def __init__(self, image_width, image_length, shooting_obj):
         
         self.shooting_obj = shooting_obj
@@ -16,3 +17,6 @@ class Fire(Sprite):
         self.update_sprite()
         if option == 'hits':
             self.update_current_sprite('hits')
+
+    def get_fire_rect(self):
+        return self.rect

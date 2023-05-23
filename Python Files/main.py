@@ -16,29 +16,33 @@ from Menu import Menu
 
 def main():
 
-    # start pygame
     pg.init()
-
-    fps = 60
 
     # Set window display
     screen = pg.display.set_mode((screen_width, screen_length))
     pg.display.set_caption('Space Cat')
-    clock = pg.time.Clock()
-    
+
     # game feautures objects
     sound = Sound()
     menu = Menu(screen)
     level = Level(screen)
-
     cat = Player(120, 281,  60, 40, level, screen)
+
+    # start running the game
+    run_game(cat, level, sound, menu, screen)
+
+def run_game(cat, level, sound, menu, screen):
+    '''starts the game loop to keep the game running'''
+    
+    clock = pg.time.Clock()
+    running = True
+    fps = 60
 
     shoot = Shoot(90, 90, cat, level.enemies, screen)
 
-    running = True
+    sound.play_background_music()
 
     while running:
-        sound.play_background_music()
     
         for event in pg.event.get():
             if event.type ==  pg.QUIT:
@@ -52,32 +56,24 @@ def main():
             if event.type ==  pg.KEYDOWN:
                 if event.key == pg.K_RIGHT:
                     cat.update_current_sprite('walk')
-                    cat.update_spr = True
-                    cat.physics.move_right = True
-                    cat.physics.direction['left'] = False
-                    cat.physics.direction["right"] = True
-                    cat.physics.move_left = False
+                    cat.physics.move_right(True)
+                    cat.physics.move_left(False)
+                    #level.change_enemy_speed(-3)
     
                 if event.key == pg.K_LEFT:
                     cat.update_current_sprite('walk')
-                    cat.physics.move_left = True
-                    cat.physics.move_right= False
-                    cat.physics.direction["right"] = False
-                    cat.physics.direction['left'] = True
-                    cat.update_spr = True
+                    cat.physics.move_right(False)
+                    cat.physics.move_left(True)
 
                 if event.key == pg.K_x:
-                    shoot.running = True # prevents fire sprite from appearing before 'x' is pressed
                     shoot.attack()
 
             if event.type == pg.KEYUP:
                 if event.key == pg.K_RIGHT or event.key == pg.K_LEFT:
                     cat.update_current_sprite('idle')
-                    cat.update_spr = True
-                    cat.physics.direction["right"] = False
-                    cat.physics.move_left = False
-                    cat.physics.move_right = False
-                    cat.physics.direction["left"] = False
+                    #level.change_enemy_speed(-3)
+                    cat.physics.move_right(False)
+                    cat.physics.move_left(False)
         
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1: 
@@ -85,16 +81,21 @@ def main():
                     if menu.start_text_rect.collidepoint(mouse_click_pos):
                         cat.counter.menu.start = False
                     if cat.counter.menu.restart_rect.collidepoint(mouse_click_pos):
-                        
+                        # once restart button is clicked, restart the game
                         cat.restart()
                         cat.counter.restart()
                         level.restart()
+                        shoot.restart()
+        
+        # keep object active and updated
         level.run()
         cat.counter.run() 
         cat.run()
         shoot.run()
 
-        cat.counter.menu.start_menu() 
+        # start menu
+        cat.counter.menu.start_menu()
+        
         pg.display.flip()
         clock.tick(fps)
 

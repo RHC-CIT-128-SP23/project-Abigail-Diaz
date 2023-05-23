@@ -1,8 +1,8 @@
-
 from Sprites import Sprite
 import pygame as pg
 
 class Flag(Sprite):
+    '''To create rect object with flag animation and handle position'''
     def __init__(self, posx, posy, image_width, image_length):
         self.flag_width = 50
         self.flag_height = 50

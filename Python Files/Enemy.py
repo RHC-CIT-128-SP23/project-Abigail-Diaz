@@ -2,6 +2,8 @@ from Sprites import Sprite
 import pygame as pg
 
 class Enemy(Sprite):
+    '''For enemy object creation and position update'''
+
     def __init__(self, posx, posy, image_width, image_length):
         self.action_array = ['eye']
         self.rect = pg.Rect(posx, posy, image_width, image_length)
