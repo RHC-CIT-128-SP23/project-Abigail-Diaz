@@ -53,27 +53,31 @@ At last, testing was also used as part of the SDLC. The main testing was checkin
 
 Describe the testing process using paragraphs and numbered bullet lists how to manually test the software here. 
   
-  ## Cat Testing
-   1. Upon starting the game, the cat's initial position should be near the start (left side) of the screen.
-   2. The cat should stay idling if it isn't moving forwards or backwards due to user input. 
-   3. Press [space bar] to check if the cat jumps.
-   4. Press right keyboard key to check if the character moves to the right.
-   5. Press left keyboard key to check if character moves to the left.
-   6. Check if the character walk animation is active while pressing the right key or left key.
-   7. Press [x] twice to check if the cat shoots blue fireballs.
+  Cat Testing
+   1. Upon running the game, a blue start menu should be present with a 'start' text in the middle. 
+   2. When clicking the start text, the start menu will dissapear off the screen.
+   3. Once the start menu is off the screen, the cat appears.
+   4. The cat's initial position should be near the start (left side) of the screen.
+   5. Once the start menu is off the screen, enemies also appear and are moving towards the left side of the screen.
+   6. Press [x] to check if the cat shoots blue fireballs.
+   7. Check if the enemies dissappear once they are hit by the blue fireballs.
+   8. Press [space bar] to check if the cat jumps.
+   9. Press right keyboard key to check if the character moves to the right.
+   10. Press left keyboard key to check if character moves to the left.
+   11. Check if the character walk animation is active while pressing the right key or left key.
+   12. The cat should stay idling if it isn't moving forwards or backwards.
     
- ## Cat and Platform Testing
+  Cat and Platform Testing
    8. Jump on top of a platform to confirm the character stays on top of the platform.
    9. Walk off the platform with either the left or right keyboard key to see if character falls off the platform.
     
- ## Cat and Enemy testing
+  Cat and Enemy testing
    10. Check that the enemy hits the cat once they collide.
    11. Check if cat's life bar looses point (becomes more red) by allowing the cat to get hit by a monster.
- 
- # Enemy testing
-   12.Check if the enemies dissappear once they are hit by the blue fireballs.
+  
+
    13. Enemies should keep appearing from the right side of the screen until the player wins or looses.
 
-## Directions and Grading Rubric
+ # Directions and Grading Rubric
 
 To review the project directions or update the grading rubric review the [DIRECTIONS.md](DIRECTIONS.md) file.
