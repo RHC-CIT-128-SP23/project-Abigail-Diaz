@@ -4,7 +4,6 @@ from Counter import Counter
 import pygame as pg
 
 
-
 class Player(Sprite):
     def __init__(self, posx, posy, image_width, image_length, level, screen):
         self.level = level
@@ -14,16 +13,18 @@ class Player(Sprite):
         self.rect = pg.Rect(posx, posy, image_width, image_length)
         self.action_array = ['idle', 'walk',  'damage']
         super().__init__(self.rect, image_width, image_length, self.action_array )
-        self.visible = True
+        self.visible = False
         self.physics = Physics(self, level)
         self.counter = Counter(screen, self, level)
 
     def restart(self):
         # move character back to starting position
+        self.physics.gravity = 0
         self.rect.x = self.initial_posx
         self.rect.y = self.initial_posy
         self.counter.won = False
         self.visible = True
+        self.update_current_sprite('idle')
         
     def run(self):
         '''Start the character's main functions'''
@@ -49,3 +50,5 @@ class Player(Sprite):
         self.counter.won = True
         self.visible = False
 
+    def lost(self):
+        self.visible = False

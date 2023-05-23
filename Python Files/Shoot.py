@@ -1,8 +1,10 @@
 import pygame as pg
 from Fire import Fire
 from Sound import Sound
+from Enemy import Enemy
 
 class Shoot:
+    '''Handles fire object and player's attack'''
     def __init__(self, image_width, image_length, shooting_obj, damaged_obj, surface):
         self.image_width  = image_width
         self.image_length = image_length
@@ -10,37 +12,37 @@ class Shoot:
         self.shooting = False
         self.surface = surface
         self.fire_sprite_group = pg.sprite.Group()
-        self.fire = Fire(50, 50, shooting_obj) # might be able to delete
-        self.fire_sprite_group.add(self.fire)
+        self.fire = Fire(50, 50, shooting_obj)
         self.shooting_obj = shooting_obj
         self.damaged_obj = damaged_obj
+        self.collision_rect = None
         self.sound = Sound()
-        
 
-    def run(self): # try to put on one event  x press
+    def run(self):
         ''' Activate the fire sprite group display and sprite update'''
-        if self.running: # checks if user has pessed for the first time 'x'
-            self.fire_sprite_group.draw(self.surface)
-            self.fire_sprite_group.update()
-            self.shot()
-        
-        #creates a new fire object if player is shooting
-    def attack(self): # might have to change initial position here
-            self.make_another_fire()
-            self.sound.play_shot_sound()
+        self.fire_sprite_group.draw(self.surface)
+        self.fire_sprite_group.update()
+        self.shot()
 
-    def make_another_fire(self):
-        new_fire = self.fire = Fire(50, 50, self.shooting_obj)
+    def restart(self):
+        self.clear_fire_group()
+        
+    def attack(self):
+        '''creates a new fire object once player shoots'''
+        self.create_another_fire()
+        self.sound.play_shot_sound()
+
+    def create_another_fire(self):
+        '''Creates a new fire object to be added to the existing fire sprite group'''
+        new_fire = Fire(50, 50, self.shooting_obj)
         self.fire_sprite_group.add(new_fire)
     
     def clear_fire_group(self):
-        pass
+        self.fire_sprite_group.empty()
 
     def shot(self):
-        self.collision = pg.sprite.groupcollide(self.damaged_obj, self.fire_sprite_group, True, True) # collision between two groups 
-        
-        if len(self.damaged_obj) < 1:
-            print('empty')
+        '''checks if the passed object was hit by a fire object. If so, the fire animation is updated'''
+        self.collision = pg.sprite.groupcollide(self.damaged_obj, self.fire_sprite_group, True, False)
 
         if self.collision:
             self.fire_sprite_group.update('hits')
