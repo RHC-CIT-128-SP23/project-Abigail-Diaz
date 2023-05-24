@@ -17,6 +17,7 @@ class Physics:
         self.flag_collision = False
         self.on_floor_counter = 0
         self.non_col = 0
+        self.collision_rect = pg.Rect(0, 0, 10, 10)
     
     def run(self):
         '''check player's actions'''
@@ -39,9 +40,6 @@ class Physics:
 
             if self.direction['left']:
                 self.rect.x -= 2
-                
-            #elif self.direction['right']:
-                #self.level.move_screen_forward(-2)
 
     def falling(self):
         # Character will fall down as y value of rect increase
@@ -124,29 +122,30 @@ class Physics:
             self.gravity = 0
             self.non_col = 0
             self.fall = False
-            self.jump = False
-            print('collsion')                                                                                            
+            self.jump = False                                                                                          
             
-            collision_rect = self.level.get_tile_collision_rect(self.player)
+            self.collision_rect = self.level.get_tile_collision_rect(self.player)
     
             # Upon collision, check if player is on top of a tile
-            if  ((self.player.rect.left < collision_rect.right or self.player.rect.right > collision_rect.left) and ((abs(self.rect.bottom - collision_rect.top) < 50))):
+            if  ((self.player.rect.left < self.collision_rect.right or self.player.rect.right > self.collision_rect.left) and ((abs(self.rect.bottom - self.collision_rect.top) < 50))):
                 self.on_floor_counter += 1
             
-                # Collision with the floor
-                if (abs(self.rect.bottom - collision_rect.top)) < 50:
-                    self.rect.bottom = collision_rect.top + 0.5
+                if (abs(self.rect.bottom - self.collision_rect.top)) < 50:
+                    self.rect.bottom = self.collision_rect.top + 0.5
 
-            elif  ((self.rect.left < collision_rect.right or self.rect.right > collision_rect.left) and (abs(self.rect.top - collision_rect.bottom) < 20)):
+            # check if collision is with the bottom of a tile
+            elif  ((self.rect.left < self.collision_rect.right or self.rect.right > self.collision_rect.left) and (abs(self.rect.top - self.collision_rect.bottom) < 20)):
                 self.repel_down()
-        
-            elif collision_rect.right > self.rect.right and (self.rect.bottom > collision_rect.top):
+            
+            # check if collision is from the left of a tile
+            elif self.collision_rect.right > self.rect.right and (self.rect.bottom > self.collision_rect.top):
                 self.fall = False
                 self.on_floor_counter = 0
                 self.repel_to_left()
                 left_collision = True
-        
-            elif collision_rect.left < self.rect.left and (self.rect.bottom > collision_rect.top):
+
+            # check if collision is from the right of a tile
+            elif self.collision_rect.left < self.rect.left and (self.rect.bottom > self.collision_rect.top):
                 self.repel_to_right()
                 self.on_floor_counter = 0
                 self.fall = False

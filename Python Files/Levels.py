@@ -1,8 +1,10 @@
 
+'''Contains level layout'''
+
 level_map = [
 'x                                                                   ',
 'x                                 xx                            F   ',
-'x                             xx    xx                       xxxx   ',
+'x                             xx                             xxxx   ',
 'xx  xxx       xx         xx          xxx   xx          xxxx         ',
 'x                  xx         E                    xxxx             ',
 'xxxx           E       xx  xxx          xxxx                        ',

@@ -1,9 +1,9 @@
 from Platform import screen_width, screen_length
 
-
 import pygame as pg
 
 class Menu:
+    '''Creates the menus for winning, loosing and starting the game'''
     def __init__(self, screen):
         self.start = True
         self.screen = screen
