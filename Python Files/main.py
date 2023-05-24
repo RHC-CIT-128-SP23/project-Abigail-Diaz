@@ -38,6 +38,7 @@ def run_game(cat, level, sound, menu, screen):
     running = True
     fps = 60
 
+    # for cat's shooting action
     shoot = Shoot(90, 90, cat, level.enemies, screen)
 
     sound.play_background_music()
@@ -58,7 +59,6 @@ def run_game(cat, level, sound, menu, screen):
                     cat.update_current_sprite('walk')
                     cat.physics.move_right(True)
                     cat.physics.move_left(False)
-                    #level.change_enemy_speed(-3)
     
                 if event.key == pg.K_LEFT:
                     cat.update_current_sprite('walk')
@@ -71,7 +71,6 @@ def run_game(cat, level, sound, menu, screen):
             if event.type == pg.KEYUP:
                 if event.key == pg.K_RIGHT or event.key == pg.K_LEFT:
                     cat.update_current_sprite('idle')
-                    #level.change_enemy_speed(-3)
                     cat.physics.move_right(False)
                     cat.physics.move_left(False)
         

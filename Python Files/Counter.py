@@ -4,6 +4,9 @@ from Menu import Menu
 
 class Counter():
     def __init__(self, screen, player, level):
+        '''Keeps track of the player's life points by using a health bar. Creates and manages the health bar
+        by checking player's collisions with enemies or if player has fallen off the screen'''
+        
         self.flag_width = 50
         self.flag_height = 50
         self.posx = 500
@@ -18,12 +21,11 @@ class Counter():
         self.red_block = pg.Surface((self.health_bar_length, self.health_bar_height))
         self.red_block.fill('red')
         self.lost = False
-        self.won = False
         self.player = player
         self.green_bar_image = self.original_image
         self.screen = screen
-        self.menu = Menu(screen)
         self.level = level
+        self.menu = Menu(screen)
         self.flag_rect = pg.Rect(self.posx, self.posy, self.flag_width, self.flag_height)
     
     def run(self):
@@ -32,6 +34,7 @@ class Counter():
         self.screen.blit(self.green_bar_image, (self.health_bar_posx, self.health_bar_posy))
         
     def collision(self):
+        '''Called when player sustains damage'''
         self.update_size()
 
     def update_size(self): 
@@ -53,6 +56,11 @@ class Counter():
         
         # check if player has fallen off a cliff, update to 'lost' status if true
         if self.player.rect.y > 1000:
+            
+            # update the length of green bar
+            self.health_bar_length = 0
+            self.green_bar_image = pg.transform.smoothscale(self.original_image, (self.health_bar_length, self.health_bar_height))
+            
             self.lost = True
             self.player.physics.fall = False
 
@@ -65,3 +73,5 @@ class Counter():
         self.lost = False
         self.health_bar_length = self.initial_health_bar_length
         self.green_bar_image = pg.transform.smoothscale(self.original_image, (self.health_bar_length, self.health_bar_height))
+
+        
