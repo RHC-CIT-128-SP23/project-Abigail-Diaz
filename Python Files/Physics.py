@@ -125,30 +125,32 @@ class Physics:
             self.jump = False                                                                                          
             
             self.collision_rect = self.level.get_tile_collision_rect(self.player)
-    
-            # Upon collision, check if player is on top of a tile
-            if  ((self.player.rect.left < self.collision_rect.right or self.player.rect.right > self.collision_rect.left) and ((abs(self.rect.bottom - self.collision_rect.top) < 50))):
-                self.on_floor_counter += 1
-            
-                if (abs(self.rect.bottom - self.collision_rect.top)) < 50:
-                    self.rect.bottom = self.collision_rect.top + 0.5
 
-            # check if collision is with the bottom of a tile
-            elif  ((self.rect.left < self.collision_rect.right or self.rect.right > self.collision_rect.left) and (abs(self.rect.top - self.collision_rect.bottom) < 20)):
-                self.repel_down()
+            if self.collision_rect != None:
             
-            # check if collision is from the left of a tile
-            elif self.collision_rect.right > self.rect.right and (self.rect.bottom > self.collision_rect.top):
-                self.fall = False
-                self.on_floor_counter = 0
-                self.repel_to_left()
-                left_collision = True
+                # Upon collision, check if player is on top of a tile
+                if  ((self.player.rect.left < self.collision_rect.right or self.player.rect.right > self.collision_rect.left) and ((abs(self.rect.bottom - self.collision_rect.top) < 50))):
+                    self.on_floor_counter += 1
+            
+                    if (abs(self.rect.bottom - self.collision_rect.top)) < 50:
+                        self.rect.bottom = self.collision_rect.top + 0.5
 
-            # check if collision is from the right of a tile
-            elif self.collision_rect.left < self.rect.left and (self.rect.bottom > self.collision_rect.top):
-                self.repel_to_right()
-                self.on_floor_counter = 0
-                self.fall = False
+                # check if collision is with the bottom of a tile
+                elif  ((self.rect.left < self.collision_rect.right or self.rect.right > self.collision_rect.left) and (abs(self.rect.top - self.collision_rect.bottom) < 20)):
+                    self.repel_down()
+            
+                # check if collision is from the left of a tile
+                elif self.collision_rect.right > self.rect.right and (self.rect.bottom > self.collision_rect.top):
+                    self.fall = False
+                    self.on_floor_counter = 0
+                    self.repel_to_left()
+                    left_collision = True
+
+                # check if collision is from the right of a tile
+                elif self.collision_rect.left < self.rect.left and (self.rect.bottom > self.collision_rect.top):
+                    self.repel_to_right()
+                    self.on_floor_counter = 0
+                    self.fall = False
 
         else:
             # prevents unintended fall value from becoming true when else becomes true for a moment
@@ -156,7 +158,7 @@ class Physics:
             if self.non_col > 4: 
                 self.fall = True
             self.non_col += 1
-        
+
     def check_flag_collision(self):
         '''Check if player collides with the flag object. 
             if collision happens, player wins and the win menu is called'''
