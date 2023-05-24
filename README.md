@@ -20,7 +20,7 @@ have lost the game or not.
 
 ### Video Demonstration
 
-Add a Link to your video demonstration
+Video Link: https://youtu.be/g1yUI3r_Lvo
 
 ### Install Instructions
 
@@ -62,9 +62,9 @@ Describe the testing process using paragraphs and numbered bullet lists how to m
    
    Note: Keep pressing [x] when an enemy is nearby the cat to avoid dying while testing the next steps:
    
- 2. When clicking the start text, the start menu will disappear off the screen. Once the start menu is off the screen, the cat appears near the start (from the left) of the screen. Also, the enemies in the current screen disappear and therefore start coming from the right of the screen again and are moving towards the left side of the screen.
+2. When clicking the start text, the start menu will disappear off the screen. Once the start menu is off the screen, the cat appears near the start (from the left) of the screen. Also, the enemies in the current screen disappear and therefore start coming from the right of the screen again and are moving towards the left side of the screen.
    
- 3. Press [x] to make the cat shoot blue fireballs. The enemies will disappear once they are hit by the blue fireballs. While shooting enemies, the blue fireballs should explode after they hit an enemy. Fireballs of the same group will also explode. The fireballs will not disappear until they are off the screen.
+3. Press [x] to make the cat shoot blue fireballs. The enemies will disappear once they are hit by the blue fireballs. While shooting enemies, the blue fireballs should explode after they hit an enemy. Fireballs of the same group will also explode. The fireballs will not disappear until they are off the screen.
    
 4. Press [space bar] to check if the cat jumps.
 
