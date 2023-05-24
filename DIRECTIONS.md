@@ -48,7 +48,7 @@ The student provided rubric is worth 75 points and is specific to the individual
   * Program's Controls (15 pt)
     1. Allow user to move character to the right and to the left using right and left keyboard keys. (5 pt)
     2. Allow user to make the character jump by pressing the space bar key. (5 pt)
-    3. Allow the user to shoot enemies by pressing the [x] key twice. (5 pt)
+    3. Allow the user to shoot enemies by pressing the [x] key. (5 pt)
   * Enemy Actions (10 pt)
     1. Have an appropiate number of enemies spawn from the right of the screen, wheather the character is moving forward or not. (5 pt)
     2. The enemy should dissapear when it gets shot by the character. (5 pt)
