@@ -26,6 +26,11 @@ Add a Link to your video demonstration
 
 Add any install instructions, if needed. This includes how to install included modules or libraries as well as configurations. You may remove this section if no special instructions are required.
 
+- Required programming language: Python
+  - Installing python
+  
+  Visit the python website to download and install the python latest package: https://www.python.org/downloads/
+
 - Required modules: Pygame
 
   -Installing Pygame module 
@@ -53,47 +58,47 @@ At last, testing was also used as part of the SDLC. The main testing was checkin
 
 Describe the testing process using paragraphs and numbered bullet lists how to manually test the software here. 
   
-   1. Upon running the program, a blue start menu should be present with a 'start' text in the middle.
-   Flying enemies are in the background of the start menu as well, appearing from the left of the screen and then flying to      the right until they are off the screen. The background music and the purple space background is present as well, along with the layout of tiles. On the top right corner of the screen, the health bar is displayed. The health bar should be fully green.
+1. Upon running the program, a blue start menu should be present with a 'start' text in the middle. Flying enemies are in the background of the start menu as well, appearing from the right of the screen and then flying to the left until they are off the screen. The enemies have an animation that includes flipping their wings. The background music and the purple space background is present as well, along with the layout of tiles. On the top right corner of the screen, the health bar is displayed. The health bar should be fully green.
    
-   Note: Keep pressing [x] when an enemy is nearby to avoid dying while testing the next steps:
+   Note: Keep pressing [x] when an enemy is nearby the cat to avoid dying while testing the next steps:
    
-   2. When clicking the start text, the start menu will dissapear off the screen. Once the start menu is off the screen, the cat appears near the start (from the left) of the screen. Also, the enemies's in the current screen disappear and therefore start coming from the right of the screen again and are moving towards the left side of the screen.
+ 2. When clicking the start text, the start menu will disappear off the screen. Once the start menu is off the screen, the cat appears near the start (from the left) of the screen. Also, the enemies in the current screen disappear and therefore start coming from the right of the screen again and are moving towards the left side of the screen.
    
-   3. Press [x] to make the cat shoot blue fireballs. The enemies will dissappear once they are hit by the blue fireballs.
-   While shooting enemies, the blue fireballs should explode after they hit an enemy. Fireballs of the same group will also explode.
+ 3. Press [x] to make the cat shoot blue fireballs. The enemies will disappear once they are hit by the blue fireballs. While shooting enemies, the blue fireballs should explode after they hit an enemy. Fireballs of the same group will also explode. The fireballs will not disappear until they are off the screen.
    
-   4. Press left keyboard key to check if cat moves to the left. While walking left, walk animation should be active as well.
-   5. By pressing left, check that the cat does not go through a wall on its left side.
- 
-   6. Press right keyboard key to check if the cat moves to the right. While walking right, walk animation should be active as well.
+4. Press [space bar] to check if the cat jumps.
+
+5. By pressing [space bar], jump high until the top of the screen is reached. The cat should not go off the screen.
+   
+6. Press the left keyboard key once or twice to check if the cat moves to the left. While walking left, walk animation should be active as well.
+
+7. Press the right keyboard key once or twice to check if the cat moves to the right. While walking right, walk animation should be active as well.
+
+8. By pressing the left key, find a wall on the left side and check that the cat does not go through a wall on its left side.
+
+9. By pressing right, walk towards a wall to check that the cat does not go through a wall on its right side. Go back to the original position.
+   
+10. The cat's idling animation should be active if it isn't moving forwards or backwards.
   
-   7. By pressing left, walk towards a wall to check that the cat does not go through a wall on its right side.
+11. By using the moving keys (left or right) move the cat towards a platform and jump on one. Confirm the cat stays on top of the platform. The cat should also fall off the platform once it isn’t on top of it anymore.
    
-   8. While not pressing anything, except [x] when necessary, the cat's idling animation should be active if it isn't moving forwards or backwards.
+12. Walk off a platform into a pit where there are no tiles where the cat will land. A restart menu should appear. The restart menu should say 'you lose!' on top of the restart button. The health bar is fully red since the cat lost all life points as well.
+   
+13. Click the restart button to restart the game. Once the restart button is pressed, the level's layout should reset to the original position. The cat's position is also reset to its original position. The enemies are also reset to position from the right again.
+   
+14. By not pressing [x] anymore, let the player get hit by an enemy once. As soon as the cat turns red, press [x] to kill the enemy. The player's damage animation, which turns him red, should be active after the collision with the enemy. Also, the cat's life bar loses points (becomes more red) after the enemy collision.
+   
+15. Allow the cat to be hit multiple times by an enemy or enemies. Once the health bar loses all life points and therefore is all red, the restart screen for losing should appear.
+   
+16. Click the restart button to restart the game. Check that once the restart button is pressed, that the level's layout resets to the original position, along with the cat.
   
-   9. Press [space bar] to check if the cat jumps.
+17. Search for the winning red flag by moving forward (right) and by avoiding falling off a pit or being killed off by enemies. The flag should have a waving animation. Allow the cat to collide with the flag. Once both the cat and flag collide, a winning screen should appear. The winning screen lets the player know they have won. The text should say 'You won!' and underneath this text, the restart button is located.
    
-   10. By using the moving keys (left or right) move the cat towards a platform and jump on one. Confirm the cat stays on top of the platform.
+18. Click the restart button to restart the game.
    
-   11. Walk off the platform with either the left or right keyboard key to see if cat falls off the platform.
-   
-   12. Walk off a platform into a pit where there are no tiles where the cat will land. A restart menu should appear. The restart menu should say 'you lose!' on top of the restart button.
-   
-   13. Click the restart button to restart the game. Once the restart button is pressed, the level's layout should reset to original position. The cat's position is also reset to its original position.
-   
-   14. By not pressing [x] anymore, let the player be hit by an enemy once. As soon as the cat turns red, press [x] to kill the enemy. The player's damage animation, which turns him red, should be active after the collision with the enemy. Also, the cat's life bar looses points (becomes more red) after the enemy collision.
-   
-   15. Allow the cat to be hit multiple times by an enemy or enemies. Once the health bar looses all life points and therefore is all red, the restart screen for loosing should appear.
-   
-   16. Click the restart button to restart the game. Check that once the restart button is pressed, that the level's layout resets to original position, along with the cat.
-  
-   17. Search for the winning red flag by moving forward (right) and by avoiding falling off a pit or being killed off by enemies. The flag should have a waving animation. Allow the cat to collide with the flag. Once both the cat and flag collide, a winning screen should appear. The winning screen lets the player know they have won. The text should say 'You won!' and underneath this text, the restart button is located.
-   
-   18. Click the restart button to restart the game.
-   
-   19. Press the red x on the left top corner to exit the program.
-  
+19. Press the red x on the left top corner to exit the program.
+
+
  # Directions and Grading Rubric
 
 To review the project directions or update the grading rubric review the [DIRECTIONS.md](DIRECTIONS.md) file.
