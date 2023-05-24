@@ -53,39 +53,46 @@ At last, testing was also used as part of the SDLC. The main testing was checkin
 
 Describe the testing process using paragraphs and numbered bullet lists how to manually test the software here. 
   
-  Cat Testing
-   1. Upon running the game, a blue start menu should be present with a 'start' text in the middle. 
-   2. When clicking the start text, the start menu will dissapear off the screen.
-   3. Once the start menu is off the screen, the cat appears.
-   4. Once the start menu is off the screen, enemies also appear from the right and are moving towards the left side of the screen.
-   5. Press [x] to check if the cat shoots blue fireballs.
-   6. Check if the enemies dissappear once they are hit by the blue fireballs.
-   7. The cat's initial position should be near the start (left side) of the screen.
-   8. Press left keyboard key to check if character moves to the left.
-   9. Press right keyboard key to check if the character moves to the right.
-   10. The cat's idling animation should be active if it isn't moving forwards or backwards.
-   11. Check if the character walk animation is active while pressing the right key or left key.
-   12. Press [space bar] to check if the cat jumps.
-   13. By using the moving keys (left or right) move the cat towards a platform and jump on one. Confirm the character stays on top of the platform.
-   14. Walk off the platform with either the left or right keyboard key to see if character falls off the platform.
-   15. Walk off a platform into a pit where there are no tiles where the cat will land. A restart screen should appear.
-   16. Click the restart button to restart the game.
-   17. Check that once the restart button is pressed, that the level's layout resets to original position.
-   18. Check that once the restart button is pressed, that the cat's position is also reset to its original position.
-   19. Check that the player's damage animation, which turns him red, is active after it collides with an enemy.
-   20. Check if cat's life bar looses points (becomes more red) by allowing the cat to get hit by a monster.
-   21. Allow the cat to be hit multiple times by an enemy or enemies. Once the health bar looses all life points and therefore is all red, the restart screen for loosing should appear.
-   22. Check that the restart screen shows a message saying 'you lose!'.
-   23. Check that the restart screen shows a restart button underneath the 'you lose!' text.
-   24. Click the restart button to restart the game.
-   25. Check that once the restart button is pressed, that the level's layout resets to original position.
-   26. Check that once the restart button is pressed, that the cat's position is also reset to its original position.
-   27. Look for the winning flag by moving forward (right) and by avoiding falling off a pit or being killed off by enemies.
-   28. Allow the cat to collide with the flag.
-   29. Once both the cat and flag collide, a winning screen should appear.
-   30. The winning screen lets the player know they have won. The text should say 'You won!'
-   31. The winning screen should have a restart button underneath.
-   32. Click the restart button to restart the game.
+   1. Upon running the program, a blue start menu should be present with a 'start' text in the middle.
+   Flying enemies are in the background of the start menu as well, appearing from the left of the screen and then flying to      the right until they are off the screen. The background music and the purple space background is present as well, along with the layout of tiles. On the top right corner of the screen, the health bar is displayed. The health bar should be fully green.
+   
+   Note: Keep pressing [x] when an enemy is nearby to avoid dying while testing the next steps:
+   
+   2. When clicking the start text, the start menu will dissapear off the screen. Once the start menu is off the screen, the cat appears near the start (from the left) of the screen. Also, the enemies's in the current screen disappear and therefore start coming from the right of the screen again and are moving towards the left side of the screen.
+   
+   3. Press [x] to make the cat shoot blue fireballs. The enemies will dissappear once they are hit by the blue fireballs.
+   While shooting enemies, the blue fireballs should explode after they hit an enemy. Fireballs of the same group will also explode.
+   
+   4. Press left keyboard key to check if cat moves to the left. While walking left, walk animation should be active as well.
+   5. By pressing left, check that the cat does not go through a wall on its left side.
+ 
+   6. Press right keyboard key to check if the cat moves to the right. While walking right, walk animation should be active as well.
+  
+   7. By pressing left, walk towards a wall to check that the cat does not go through a wall on its right side.
+   
+   8. While not pressing anything, except [x] when necessary, the cat's idling animation should be active if it isn't moving forwards or backwards.
+  
+   9. Press [space bar] to check if the cat jumps.
+   
+   10. By using the moving keys (left or right) move the cat towards a platform and jump on one. Confirm the cat stays on top of the platform.
+   
+   11. Walk off the platform with either the left or right keyboard key to see if cat falls off the platform.
+   
+   12. Walk off a platform into a pit where there are no tiles where the cat will land. A restart menu should appear. The restart menu should say 'you lose!' on top of the restart button.
+   
+   13. Click the restart button to restart the game. Once the restart button is pressed, the level's layout should reset to original position. The cat's position is also reset to its original position.
+   
+   14. By not pressing [x] anymore, let the player be hit by an enemy once. As soon as the cat turns red, press [x] to kill the enemy. The player's damage animation, which turns him red, should be active after the collision with the enemy. Also, the cat's life bar looses points (becomes more red) after the enemy collision.
+   
+   15. Allow the cat to be hit multiple times by an enemy or enemies. Once the health bar looses all life points and therefore is all red, the restart screen for loosing should appear.
+   
+   16. Click the restart button to restart the game. Check that once the restart button is pressed, that the level's layout resets to original position, along with the cat.
+  
+   17. Search for the winning red flag by moving forward (right) and by avoiding falling off a pit or being killed off by enemies. The flag should have a waving animation. Allow the cat to collide with the flag. Once both the cat and flag collide, a winning screen should appear. The winning screen lets the player know they have won. The text should say 'You won!' and underneath this text, the restart button is located.
+   
+   18. Click the restart button to restart the game.
+   
+   19. Press the red x on the left top corner to exit the program.
   
  # Directions and Grading Rubric
 
