@@ -32,10 +32,9 @@ class Sprite(pg.sprite.Sprite):
 
         self.mask = pg.mask.from_surface(self.image)
 
-    
     def retrieve_file_paths(self, action_array):
         '''Obtains the directories of each image in the media file.
-            Organizes each path in an array and then saves the arrays im
+            Organizes each path in an array and then saves the arrays in
             a dict based on action descriptions in action_array'''
         
         media_directory = 'media/'
