@@ -11,7 +11,7 @@ CIT 128 Student Directed Project
 
 ## Program Description
 
-My project is a platformer game where the player must pass two levels in the game. 
+My project is a platformer game where the player must pass the level by reaching a red flag. 
 The enemies are alien green eyes with purple wings. The playable character is a cat.
 The cat must jump and move forward while avoiding pitfalls and attacking enemies.
 The goal of the program is to provide a simple game that works according to the player's input and
@@ -46,9 +46,9 @@ Add any install instructions, if needed. This includes how to install included m
 
 Describe the software engineering techniques used for the design and development of this program.
 
-The software engeneering techniques from the Software Development Life Cycle (SDLC) that have been used in the development of the project are checking if the project is feasible. The feasability taken into account is technical, since it would affect the project's progress the most when it comes to proper knowledge for implementation. Learning pygame for instance would take at least a week, therefore implementation would be delayed by a week. The second important feasibility is time since the project must be finished within 8 weeks, therefore I took into account that the game could not have varied enemies. Instead it was more feasable to keep one kind of enemy.
+The software engeneering techniques from the Software Development Life Cycle (SDLC) that have been used in the development of the project are checking if the project is feasible. The feasability taken into account is technical, since it would affect the project's progress the most when it comes to proper knowledge of implementation. Learning pygame for instance would take at least a week, therefore implementation would be delayed by a week. The second important feasibility is time since the project must be finished within 8 weeks, therefore I took into account that the game would not have varied enemies. Instead it was more feasable to keep one kind of enemy.
 
-Secondly, once it was clear what was feasable, an analysis of the requirements was performed. The main functional requirements are allowing the cat to run forwards, backwards, jump, jump on platforms and reach a checkpoint to win. Logically, the game's goal is to give a gaming experience of a cat trying to pass a level, so thos functional requirements are important since it is a platformer game. Shooting the enemies was also a functional requirement since it is part of the game's description that the player should have some type of attack. Some non-functional reuquirements are animating the run, idle, and damage of the cat.
+Secondly, once it was clear what was feasable, an analysis of the requirements was performed. The main functional requirements are allowing the cat to run forwards, backwards, jump, jump on platforms and reach a checkpoint to win. Logically, the game's goal is to give a gaming experience of a cat trying to pass a level, so those functional requirements are important since it is a platformer game. Shooting the enemies was also a functional requirement since it is part of the game's description that the player should have some type of attack. Some non-functional requirements are animating the run, idle, and damage of the cat.
 
 The other software developing technique used was the overall developing in the software stage. At this stage, the programming languages that will be used are taken into account. Since python is the main programming language used, due to its resourcefulness, no other languages were necessary. Built in modules that were chosen were math and random for instance. Pygame, which might need an installation as described above in the install instructions, was perfect for a simple and straight forward creation of a simple game.
 
