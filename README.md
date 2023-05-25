@@ -102,3 +102,28 @@ Describe the testing process using paragraphs and numbered bullet lists how to m
  # Directions and Grading Rubric
 
 To review the project directions or update the grading rubric review the [DIRECTIONS.md](DIRECTIONS.md) file.
+
+# Media Credit:
+
+Cat Graphics:
+https://opengameart.org/content/street-animal-pixel-art
+
+Enemy Graphics:
+https://ansimuz.itch.io/grotto-escape-game-art-pack
+
+Galaxy Image:
+https://www.vecteezy.com/vector-art/1075674-purple-space-galaxy-with-shining-stars-and-nebula
+
+Shooting Graphics:
+https://ansimuz.itch.io/warped-shooting-fx
+
+Health bar: 
+https://wishforge.itch.io/gdevelop-healthbar-example
+
+Flag Graphics:
+https://ankousse26.itch.io/free-flag-with-animation
+
+Sound:
+https://mixkit.co/free-sound-effects/space-shooter/
+https://opengameart.org/content/space-shooter-music
+
