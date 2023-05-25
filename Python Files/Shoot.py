@@ -48,4 +48,3 @@ class Shoot:
     
     def clear_fire_group(self):
         self.fire_sprite_group.empty()
-    

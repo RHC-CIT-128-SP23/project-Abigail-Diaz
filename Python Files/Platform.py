@@ -45,11 +45,9 @@ class Level:
         self.enemy_speed = -3
         self.enemy_respawn_rate = 40
 
-
         self.enemy_collision_rect = pg.Rect(0, 0, 10, 10)
         self.tile_collision_rect = pg.Rect(0, 0, 10, 10)
         
-
     def setup_level(self, layout):
         '''Creates the tile layout/map, including some enemies and the flag, based on the given level map'''
         
