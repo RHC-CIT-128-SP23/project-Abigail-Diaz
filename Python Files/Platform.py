@@ -1,8 +1,6 @@
 
 import pygame as pg
-from Sprites import Sprite
-from Levels import *
-import pytmx
+from Levels import level_map
 from Enemy import Enemy
 from Flag import Flag
 import random
