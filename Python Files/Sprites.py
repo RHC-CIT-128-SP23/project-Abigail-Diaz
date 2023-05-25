@@ -122,6 +122,6 @@ class Sprite(pg.sprite.Sprite):
         
         self.current_sprite = 0
 
-        # update the animation accordig to the passed action value
+        # update the animation according to the passed action value
         if action in self.action_array:
             self.current_sprite_array = self.sprite_images_dict[action]
